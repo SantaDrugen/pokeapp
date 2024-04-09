@@ -5,6 +5,7 @@ import { useState } from 'react';
 import About from './About';
 import Home from './Home';
 import PokemonDetails from './PokemonDetails';
+import PokemonMoves from './PokemonMoves';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/pokemon/:id" element={<PokemonDetails />} />
+          <Route path="/move/:id" element={<PokemonMoves />} />
         </Routes>
       </div>
     </Router>
@@ -52,6 +54,8 @@ function NavBar() {
       <ul>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About</Link></li>
+        <li><Link to="/pokemon/1">Pokemon Details</Link></li>
+        <li><Link to="/move/1">Pokemon Moves</Link></li>
       </ul>
       <form onSubmit={handleSubmit}>
       <input 

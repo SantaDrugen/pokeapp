@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 function PokemonDetails() {
-	const { id } = useParams();
+	const { id } = useParams(1);
 	const navigate = useNavigate();
 	const [pokemon, setPokemon] = useState(null);
 	const audioRef = useRef(null);
@@ -67,11 +67,11 @@ function PokemonDetails() {
 			<div className="centered-container">
 				<h1>{pokemon.name}</h1>
 				<div className="navigation">
-					<button onClick={goToPrevPokemon} class="pageButton" disabled={pokemon.id === 1}>Previous</button>
+					<button onClick={goToPrevPokemon} className="pageButton" disabled={pokemon.id === 1}>Previous</button>
 					<img src={pokemon.sprites.front_default} alt={pokemon.name} />
-					<button onClick={goToNextPokemon} class="pageButton" disabled={pokemon.id === 1025}>Next</button>
+					<button onClick={goToNextPokemon} className="pageButton" disabled={pokemon.id === 1025}>Next</button>
 				</div>
-				<button onClick={playSound}>Play cry</button>
+				<button className="pageButton" onClick={playSound}>Play cry</button>
 				<audio ref={audioRef} src={pokemon.cries.latest} />
 				<PokemonMeasurements weight={pokemon.weight} height={pokemon.height} base_experience={pokemon.base_experience} />
 			</div>
@@ -142,9 +142,16 @@ function PokemonMoves({ moves }) {
 		<div className="box">
 			<h2>Moves</h2>
 			<ul>
-				{currentMoves.map((move, index) => (
-					<li key={index}>{move.move.name}</li>
-				))}
+				{currentMoves.map((move, index) => {
+					const moveId = move.move.url.split("/")[6];  // Extracts the ID from the URL
+					return (
+						<li key={index}>
+							<Link to={`/move/${moveId}`}>
+								{move.move.name}
+							</Link>
+						</li>
+					);
+				})}
 			</ul>
 			<button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
 			<button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
