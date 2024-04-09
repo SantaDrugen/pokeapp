@@ -7,6 +7,27 @@ function PokemonDetails() {
 	const [pokemon, setPokemon] = useState(null);
 	const audioRef = useRef(null);
 
+	const typeColours = {
+		normal: '#A8A77A',
+		fire: '#EE8130',
+		water: '#6390F0',
+		electric: '#F7D02C',
+		grass: '#7AC74C',
+		ice: '#96D9D6',
+		fighting: '#C22E28',
+		poison: '#A33EA1',
+		ground: '#E2BF65',
+		flying: '#A98FF3',
+		psychic: '#F95587',
+		bug: '#A6B91A',
+		rock: '#B6A136',
+		ghost: '#735797',
+		dragon: '#6F35FC',
+		dark: '#705746',
+		steel: '#B7B7CE',
+		fairy: '#D685AD'
+	  }
+
 	useEffect(() => {
 		fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
 			.then(response => response.json())
@@ -35,10 +56,14 @@ function PokemonDetails() {
 		audioRef.current.play();
 	}
 
+	const type1Colour = typeColours[pokemon.types[0].type.name];
+	const type2Colour = pokemon.types[1] ? typeColours[pokemon.types[1].type.name] : type1Colour;
+	const gradient = `linear-gradient(to right, ${type1Colour}, ${type2Colour})`;
+
 	if (!pokemon) return <div>Loading...</div>;
 
 	return (
-		<div className="main-container">
+		<div className="main-container" style={{background: gradient}}>
 			<div className="centered-container">
 				<h1>{pokemon.name}</h1>
 				<div className="navigation">
@@ -156,13 +181,13 @@ function PokemonSprites({ sprites }) {
 			<h2>Sprites</h2>
 			<ul>
 				{Object.entries(sprites)
-				.slice(0, -2) //seems like the last two sprites of a lot of the pokémon are bad
-				.map(([key, value]) => {
-					if (value) {
-						return <img key={key} src={value} alt={key} />;
-					}
-					return null;
-				})}
+					.slice(0, -2) //seems like the last two sprites of a lot of the pokémon are bad
+					.map(([key, value]) => {
+						if (value) {
+							return <img key={key} src={value} alt={key} />;
+						}
+						return null;
+					})}
 			</ul>
 		</div>
 	);

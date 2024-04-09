@@ -36,12 +36,14 @@ function NavBar() {
         .then(data => {
           const id = data.id;
           navigate(`/pokemon/${id}`);
+          setSearchTerm('');
         })
         .catch(() => {
           alert('Pokemon not found');
         });
     } else {
       navigate(`/pokemon/${searchTerm}`);
+      setSearchTerm('');
     }
   }
 
