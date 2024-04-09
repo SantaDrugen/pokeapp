@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://SantaDrugen.github.io/pokeapp/static/css/main.b96003ce.css",
-    "main.js": "https://SantaDrugen.github.io/pokeapp/static/js/main.fd803a00.js",
+    "main.js": "https://SantaDrugen.github.io/pokeapp/static/js/main.c2375629.js",
     "static/js/453.1ffb5861.chunk.js": "https://SantaDrugen.github.io/pokeapp/static/js/453.1ffb5861.chunk.js",
     "index.html": "https://SantaDrugen.github.io/pokeapp/index.html",
     "main.b96003ce.css.map": "https://SantaDrugen.github.io/pokeapp/static/css/main.b96003ce.css.map",
-    "main.fd803a00.js.map": "https://SantaDrugen.github.io/pokeapp/static/js/main.fd803a00.js.map",
+    "main.c2375629.js.map": "https://SantaDrugen.github.io/pokeapp/static/js/main.c2375629.js.map",
     "453.1ffb5861.chunk.js.map": "https://SantaDrugen.github.io/pokeapp/static/js/453.1ffb5861.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b96003ce.css",
-    "static/js/main.fd803a00.js"
+    "static/js/main.c2375629.js"
   ]
 }
