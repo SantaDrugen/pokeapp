@@ -26,7 +26,7 @@ function PokemonDetails() {
 		dark: '#705746',
 		steel: '#B7B7CE',
 		fairy: '#D685AD'
-	  }
+	}
 
 	useEffect(() => {
 		fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -56,20 +56,20 @@ function PokemonDetails() {
 		audioRef.current.play();
 	}
 
-	const type1Colour = typeColours[pokemon.types[0].type.name];
-	const type2Colour = pokemon.types[1] ? typeColours[pokemon.types[1].type.name] : type1Colour;
+	const type1Colour = pokemon && pokemon.types && pokemon.types[0] ? typeColours[pokemon.types[0].type.name] : 'defaultColor';
+	const type2Colour = pokemon && pokemon.types && pokemon.types[1] ? typeColours[pokemon.types[1].type.name] : type1Colour;
 	const gradient = `linear-gradient(to right, ${type1Colour}, ${type2Colour})`;
 
 	if (!pokemon) return <div>Loading...</div>;
 
 	return (
-		<div className="main-container" style={{background: gradient}}>
+		<div className="main-container" style={{ background: gradient }}>
 			<div className="centered-container">
 				<h1>{pokemon.name}</h1>
 				<div className="navigation">
-					<button onClick={goToPrevPokemon} class="pageButton">Previous</button>
+					<button onClick={goToPrevPokemon} class="pageButton" disabled={pokemon.id === 1}>Previous</button>
 					<img src={pokemon.sprites.front_default} alt={pokemon.name} />
-					<button onClick={goToNextPokemon} class="pageButton">Next</button>
+					<button onClick={goToNextPokemon} class="pageButton" disabled={pokemon.id === 1025}>Next</button>
 				</div>
 				<button onClick={playSound}>Play cry</button>
 				<audio ref={audioRef} src={pokemon.cries.latest} />
