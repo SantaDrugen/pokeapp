@@ -34,6 +34,22 @@ nav ul li a:hover {
   align-items: center;
 }
 
+.container .navigation {
+  display: flex;
+  align-items: center;
+}
+
+.container .details {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.container .boxes {
+  display: flex;
+  justify-content: space-between;
+}
+
 .center-content {
   width: 50%;
   display: flex;
@@ -94,4 +110,21 @@ nav ul li a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centered-container {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
 }

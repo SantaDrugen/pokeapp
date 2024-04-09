@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function PokemonDetails() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [pokemon, setPokemon] = useState(null);
+	const audioRef = useRef(null);
 
 	useEffect(() => {
 		fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
 			.then(response => response.json())
 			.then(data => setPokemon(data));
 	}, [id]);
+
+	useEffect(() => {
+		if (pokemon) {
+			audioRef.current.load();
+		}
+	}, [pokemon]);
 
 	const goToPrevPokemon = () => {
 		if (id > 1) {
@@ -24,19 +31,30 @@ function PokemonDetails() {
 		}
     };
 
+	const playSound = () => {
+		audioRef.current.play();
+	}
+
 	if (!pokemon) return <div>Loading...</div>;
 
-	return (
-		<div className="container">
+	return ( 
+		<div className="main-container">
+		<div className="centered-container">
 			<h1>{pokemon.name}</h1>
-        	<div style={{ display: 'flex', alignItems: 'center' }}>
+        	<div className="navigation">
             	<button onClick={goToPrevPokemon}>Previous</button>
             	<img src={pokemon.sprites.front_default} alt={pokemon.name} />
             	<button onClick={goToNextPokemon}>Next</button>
         	</div>
-			<p>Height: {pokemon.height}</p>
-			<p>Weight: {pokemon.weight}</p>
-			<p>Base experience: {pokemon.base_experience}</p>
+			<button onClick = {playSound}>Play cry</button>
+			<audio ref={audioRef} src={pokemon.cries.latest} />
+			<div className="details">
+				<p>Height: {pokemon.height}</p>
+				<p>Weight: {pokemon.weight}</p>
+				<p>Base experience: {pokemon.base_experience}</p>
+			</div>
+		</div>
+		<div className="flex-container">
 			<div className="boxes">
 				<div className="box">
 					<h2>Abilities</h2>
@@ -108,6 +126,7 @@ function PokemonDetails() {
 					</ul>
 				</div>
 			</div>
+		</div>
 		</div>
 	);
 }

@@ -1,20 +1,17 @@
 import './App.css';
 import { HashRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import About from './About';
 import Home from './Home';
 import PokemonDetails from './PokemonDetails';
 
 
 export default function App() {
-  return (
+   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li><Link to= "/">Home</Link></li>
-            <li><Link to= "/about">About</Link></li>
-          </ul>
-        </nav>
+        <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -23,4 +20,33 @@ export default function App() {
       </div>
     </Router>
   )
+}
+
+
+function NavBar() {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/pokemon/${searchTerm}`);
+  }
+
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+      </ul>
+      <form onSubmit={handleSubmit}>
+      <input 
+        type="text" 
+        placeholder="Search Pokémon" 
+        value={searchTerm} 
+        onChange={event => setSearchTerm(event.target.value)} 
+      />
+      <button type="submit">Search</button>
+      </form>
+    </nav>
+  );
 }
