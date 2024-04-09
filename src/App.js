@@ -29,7 +29,20 @@ function NavBar() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`/pokemon/${searchTerm}`);
+
+    if (isNaN(searchTerm)) {
+      fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm.toLowerCase()}`)
+        .then(response => response.json())
+        .then(data => {
+          const id = data.id;
+          navigate(`/pokemon/${id}`);
+        })
+        .catch(() => {
+          alert('Pokemon not found');
+        });
+    } else {
+      navigate(`/pokemon/${searchTerm}`);
+    }
   }
 
   return (

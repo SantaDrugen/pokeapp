@@ -29,7 +29,7 @@ function PokemonDetails() {
 		if (id < 1025) {
 			navigate(`/pokemon/${parseInt(id) + 1}`);
 		}
-    };
+	};
 
 	const playSound = () => {
 		audioRef.current.play();
@@ -37,98 +37,136 @@ function PokemonDetails() {
 
 	if (!pokemon) return <div>Loading...</div>;
 
-	return ( 
+	return (
 		<div className="main-container">
-		<div className="centered-container">
-			<h1>{pokemon.name}</h1>
-        	<div className="navigation">
-            	<button onClick={goToPrevPokemon}>Previous</button>
-            	<img src={pokemon.sprites.front_default} alt={pokemon.name} />
-            	<button onClick={goToNextPokemon}>Next</button>
-        	</div>
-			<button onClick = {playSound}>Play cry</button>
-			<audio ref={audioRef} src={pokemon.cries.latest} />
-			<div className="details">
-				<p>Height: {pokemon.height}</p>
-				<p>Weight: {pokemon.weight}</p>
-				<p>Base experience: {pokemon.base_experience}</p>
+			<div className="centered-container">
+				<h1>{pokemon.name}</h1>
+				<div className="navigation">
+					<button onClick={goToPrevPokemon} class="pageButton">Previous</button>
+					<img src={pokemon.sprites.front_default} alt={pokemon.name} />
+					<button onClick={goToNextPokemon} class="pageButton">Next</button>
+				</div>
+				<button onClick={playSound}>Play cry</button>
+				<audio ref={audioRef} src={pokemon.cries.latest} />
+				<PokemonMeasurements weight={pokemon.weight} height={pokemon.height} base_experience={pokemon.base_experience} />
 			</div>
-		</div>
-		<div className="flex-container">
-			<div className="boxes">
-				<div className="box">
-					<h2>Abilities</h2>
-					<ul>
-						{pokemon.abilities.map((ability, index) => (
-							<li key={index}>{ability.ability.name}</li>
-						))}
-					</ul>
+			<div className="top-container">
+				<div className="boxes">
+					<PokemonAttributes abilities={pokemon.abilities} stats={pokemon.stats} />
+				</div>
+				<div className="boxes">
+					<PokemonMoves moves={pokemon.moves} />
+				</div>
+				<div className="boxes">
+					<PokemonBiology species={pokemon.species.name} forms={pokemon.forms.map(form => form.name)} types={pokemon.types.map(type => type.type.name)} />
 				</div>
 			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Stats</h2>
-					<ul>
-						{pokemon.stats.map((stat, index) => (
-							<li key={index}>
-								{stat.stat.name}: {stat.base_stat}
-							</li>
-						))}
-					</ul>
+			<div className="bottom-container">
+				<div className="boxes">
+					<PokemonSprites sprites={pokemon.sprites} />
 				</div>
 			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Moves</h2>
-					<ul>
-						{pokemon.moves.map((move, index) => (
-							<li key={index}>{move.move.name}</li>
-						))}
-					</ul>
-				</div>
-			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Types</h2>
-					<ul>
-						{pokemon.types.map((type, index) => (
-							<li key={index}>{type.type.name}</li>
-						))}
-					</ul>
-				</div>
-			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Forms</h2>
-					<ul>
-						{pokemon.forms.map((form, index) => (
-							<li key={index}>{form.name}</li>
-						))}
-					</ul>
-				</div>
-			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Species</h2>
-					<ul>
-						<li>{pokemon.species.name}</li>
-					</ul>
-				</div>
-			</div>
-			<div className="boxes">
-				<div className="box">
-					<h2>Sprites</h2>
-					<ul>
-					{pokemon.sprites && <img src={pokemon.sprites.front_default} alt="front_default" />}
-					{pokemon.sprites && <img src={pokemon.sprites.back_default} alt="back_default" />}
-					{pokemon.sprites && <img src={pokemon.sprites.front_shiny} alt="front_shiny" />}
-					{pokemon.sprites && <img src={pokemon.sprites.back_shiny} alt="back_shiny" />}
-					</ul>
-				</div>
-			</div>
-		</div>
 		</div>
 	);
 }
+
+function PokemonMeasurements({ height, weight, base_experience }) {
+	return (
+		<div className="details">
+			<h2>Measurements</h2>
+			<p>Height: {height}</p>
+			<p>Weight: {weight}</p>
+			<p>Base experience: {base_experience}</p>
+		</div>
+	);
+}
+
+function PokemonAttributes({ abilities, stats }) {
+	return (
+		<div className="box">
+			<h2>Stats</h2>
+			<ul>
+				{stats.map((stat, index) => (
+					<li key={index}>
+						{stat.stat.name}: {stat.base_stat}
+					</li>
+				))}
+			</ul>
+			<h2>Abilities</h2>
+			<ul>
+				{abilities.map((ability, index) => (
+					<li key={index}>{ability.ability.name}</li>
+				))}
+			</ul>
+		</div>
+	);
+}
+
+function PokemonMoves({ moves }) {
+	const [currentPage, setCurrentPage] = useState(1);
+	const movesPerPage = 10;
+
+	const indexOfLastMove = currentPage * movesPerPage;
+	const indexOfFirstMove = indexOfLastMove - movesPerPage;
+
+	const currentMoves = moves.slice(indexOfFirstMove, indexOfLastMove);
+
+	const totalPages = Math.ceil(moves.length / movesPerPage);
+
+	return (
+		<div className="box">
+			<h2>Moves</h2>
+			<ul>
+				{currentMoves.map((move, index) => (
+					<li key={index}>{move.move.name}</li>
+				))}
+			</ul>
+			<button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+			<button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+		</div>
+	);
+}
+
+function PokemonBiology({ species, forms, types }) {
+	return (
+		<div className="box">
+			<h2>Species</h2>
+			<ul>
+				<li>{species}</li>
+			</ul>
+			<h2>Forms</h2>
+			<ul>
+				{forms.map((form, index) => (
+					<li key={index}>{form}</li>
+				))}
+			</ul>
+			<h2>Types</h2>
+			<ul>
+				{types.map((type, index) => (
+					<li key={index}>{type}</li>
+				))}
+			</ul>
+		</div>
+	);
+}
+
+function PokemonSprites({ sprites }) {
+	return (
+		<div className="box">
+			<h2>Sprites</h2>
+			<ul>
+				{Object.entries(sprites)
+				.slice(0, -2) //seems like the last two sprites of a lot of the pokémon are bad
+				.map(([key, value]) => {
+					if (value) {
+						return <img key={key} src={value} alt={key} />;
+					}
+					return null;
+				})}
+			</ul>
+		</div>
+	);
+}
+
 
 export default PokemonDetails;

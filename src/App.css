@@ -118,8 +118,15 @@ nav ul li a:hover {
   align-items: center;
 }
 
+.top-container {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
 .centered-container {
   text-align: center;
+  width: 50%;
 }
 
 .flex-container {
@@ -127,4 +134,8 @@ nav ul li a:hover {
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
+}
+
+.pageButton {
+  width: 8%;
 }
