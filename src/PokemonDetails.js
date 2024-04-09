@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function PokemonDetails() {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [pokemon, setPokemon] = useState(null);
 
 	useEffect(() => {
@@ -11,12 +12,28 @@ function PokemonDetails() {
 			.then(data => setPokemon(data));
 	}, [id]);
 
+	const goToPrevPokemon = () => {
+		if (id > 1) {
+			navigate(`/pokemon/${parseInt(id) - 1}`);
+		}
+	};
+
+	const goToNextPokemon = () => {
+		if (id < 1025) {
+			navigate(`/pokemon/${parseInt(id) + 1}`);
+		}
+    };
+
 	if (!pokemon) return <div>Loading...</div>;
 
 	return (
 		<div className="container">
 			<h1>{pokemon.name}</h1>
-			<img src={pokemon.sprites.front_default} alt={pokemon.name} />
+        	<div style={{ display: 'flex', alignItems: 'center' }}>
+            	<button onClick={goToPrevPokemon}>Previous</button>
+            	<img src={pokemon.sprites.front_default} alt={pokemon.name} />
+            	<button onClick={goToNextPokemon}>Next</button>
+        	</div>
 			<p>Height: {pokemon.height}</p>
 			<p>Weight: {pokemon.weight}</p>
 			<p>Base experience: {pokemon.base_experience}</p>
