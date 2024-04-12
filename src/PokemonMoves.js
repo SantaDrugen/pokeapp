@@ -19,7 +19,7 @@ export default function PokemonMoves() {
     };
 
     const goToNextMove = () => {
-        if (id < 826) {
+        if (id < 919) {
             navigate(`/move/${parseInt(id) + 1}`);
         }
     };
@@ -28,7 +28,7 @@ export default function PokemonMoves() {
         <div className={`main-container type-${selectedMove?.type?.name}`}>
             <div className="centered-container">
                 <div className="navigation">
-                    <button className="pageButton" onClick={goToPrevMove}>Previous Move</button>
+                    <button className="pageButton" onClick={goToPrevMove} disabled={!selectedMove || selectedMove.id===1}>Previous Move</button>
                     <div>
                         <div className={`box damage-${selectedMove?.damage_class?.name}`}>
                             <MoveName name={selectedMove?.name} />
@@ -36,7 +36,7 @@ export default function PokemonMoves() {
                             <MoveDamageClass damageClass={selectedMove?.damage_class?.name} />
                         </div>
                     </div>
-                    <button className="pageButton" onClick={goToNextMove}>Next Move</button>
+                    <button className="pageButton" onClick={goToNextMove} disabled={!selectedMove || selectedMove.id===919}>Next Move</button>
                 </div>
             </div>
             <div className={`box damage-${selectedMove?.damage_class?.name}`}>

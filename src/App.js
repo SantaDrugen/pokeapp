@@ -6,6 +6,7 @@ import About from './About';
 import Home from './Home';
 import PokemonDetails from './PokemonDetails';
 import PokemonMoves from './PokemonMoves';
+import AllPokemonMoves from './AllPokemonMoves';
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/pokemon/:id" element={<PokemonDetails />} />
           <Route path="/move/:id" element={<PokemonMoves />} />
+          <Route path="/allMoves" element={<AllPokemonMoves />} />
         </Routes>
       </div>
     </Router>
@@ -52,10 +54,10 @@ function NavBar() {
   return (
     <nav>
       <ul>
-        <li><Link to="/">Home</Link></li>
+        <li><Link to="/">Pokédex</Link></li>
+        <li><Link to="/pokemon/1">Pokémon Details</Link></li>
+        <li><Link to="/allMoves">Pokemon Moves</Link></li>
         <li><Link to="/about">About</Link></li>
-        <li><Link to="/pokemon/1">Pokemon Details</Link></li>
-        <li><Link to="/move/1">Pokemon Moves</Link></li>
       </ul>
       <form onSubmit={handleSubmit}>
       <input 
